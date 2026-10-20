@@ -277,6 +277,7 @@ const modalTitle = document.getElementById('modalTitle');
 const modalChannel = document.getElementById('modalChannel');
 const modalDesc = document.getElementById('modalDesc');
 const modalYtLink = document.getElementById('modalYtLink');
+const modalDirectYtBtn = document.getElementById('modalDirectYtBtn');
 const closePlayerBtn = document.getElementById('closePlayerBtn');
 
 // 모달 요소 (리포트)
@@ -457,8 +458,16 @@ function openPlayer(youtubeId, title, channel, description) {
   modalTitle.textContent = title;
   modalChannel.textContent = channel;
   modalDesc.textContent = description;
-  modalYtLink.href = `https://www.youtube.com/watch?v=${youtubeId}`;
-  playerFrame.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`;
+  const directWatchUrl = `https://www.youtube.com/watch?v=${youtubeId}`;
+  modalYtLink.href = directWatchUrl;
+  if (modalDirectYtBtn) {
+    modalDirectYtBtn.href = directWatchUrl;
+  }
+  
+  // 유튜브 임베드 URL (origin 파라미터 및 안전 옵션 부여)
+  const originParam = window.location.origin && window.location.origin !== 'null' ? `&origin=${encodeURIComponent(window.location.origin)}` : '';
+  playerFrame.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1${originParam}`;
+  
   playerModal.classList.add('show');
   document.body.style.overflow = 'hidden';
 }
